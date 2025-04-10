@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="admLoginDAO">
+
+	<resultMap id="admLoginMap" type="echoboard.adm.login.service.EchoboardAdmLoginVO">
+		<result property="admIdx" column="ADM_IDX"/>
+		<result property="admName" column="ADM_NAME"/>
+		<result property="admId" column="ADM_ID"/>
+		<result property="admPw" column="ADM_PW"/>
+		<result property="grpIdx" column="GRP_IDX"/>	
+		<result property="companyName" column="COMPANY_NAME"/>
+	</resultMap>
+
+	<select id="actionLoginAdmin" parameterType="admLoginVO" resultMap="admLoginMap">
+		<![CDATA[
+		SELECT
+			ADM_IDX,
+		 	ADM_NAME,
+		 	ADM_ID,
+		 	ADM_PW,
+		 	GRP_IDX,
+		 	COMPANY_NAME
+		FROM TB_ADMIN_INFO
+		WHERE ADM_ID = #{loginId}
+			AND USE_YN = 'Y'
+			AND DEL_YN = 'N'
+		]]>
+	</select>
+	
+	<update id="updateLastLoginDate" parameterType="admLoginVO"><![CDATA[
+		UPDATE TB_ADMIN_INFO SET LAST_LOGIN_DATE = NOW() WHERE ADM_ID = #{loginId} AND DEL_YN = 'N'
+	]]></update>
+	
+	<update id="updateLoginFailCnt">
+		UPDATE TB_ADMIN_INFO SET
+			ADM_LOGIN_FAIL = IF(#{loginFail} = '', 0, TB_ADMIN_INFO.ADM_LOGIN_FAIL + 1),
+			ADM_LOGIN_FAIL_DT = IF(TB_ADMIN_INFO.ADM_LOGIN_FAIL = 5, NOW(), NULL)
+		WHERE ADM_ID = #{loginId} AND DEL_YN = 'N'
+	</update>
+	
+	<select id="selectReturnUrl" parameterType="admLoginVO">
+		SELECT TAM.MENU_URL
+		FROM TB_ADMIN_AUTH TAA
+		JOIN TB_ADMIN_MENU TAM ON TAA.MENU_IDX = TAM.MENU_IDX
+		WHERE ADM_IDX = #{loginIdx} AND TAM.MENU_URL IS NOT NULL
+		LIMIT 1
+	</select>
+</mapper>
