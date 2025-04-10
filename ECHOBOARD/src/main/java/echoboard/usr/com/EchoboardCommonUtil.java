@@ -515,19 +515,19 @@ public class EchoboardCommonUtil {
 	
 	public static String alertClose(final ModelMap model, String msg) {
 		model.addAttribute("message", msg);
-		return "/_inc/alertClose";
+		return "/eb/_inc/alertClose";
 	}
 
 	public static String alertMove(final ModelMap model, String msg, String moveUrl) {
 		model.addAttribute("message", msg);
 		model.addAttribute("returnUrl", moveUrl);
-		return "/_inc/alertMove";
+		return "/eb/_inc/alertMove";
 	}
 
 	public static String alertMoveRedirect(final ModelMap model, String msg, String moveUrl) {
 		model.addAttribute("message", msg);
 		model.addAttribute("returnUrl", moveUrl);
-		return "redirect:/_inc/alertMove.do";
+		return "redirect:/eb/_inc/alertMove.do";
 	}
 	
 	/**
