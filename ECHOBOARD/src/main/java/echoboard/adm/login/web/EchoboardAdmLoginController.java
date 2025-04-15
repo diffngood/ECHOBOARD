@@ -75,7 +75,7 @@ public class EchoboardAdmLoginController {
 				// 마지막 로그인 일자 업데이트
 				admLoginService.updateLastLoginDate(loginVo);
 				session.setAttribute("adminLoginSession", resultVO);
-				returnUrl = "redirect:/eb/main.do";
+				returnUrl = "redirect:/adm/main.do";
 			} else {
 
 				String wMsg = "비밀번호가 올바르지 않습니다.\\n5회 이상 실패 시 5분간 로그인이 제한됩니다.";
@@ -97,26 +97,19 @@ public class EchoboardAdmLoginController {
 						admLoginService.updateLoginFailCnt(loginVo);
 
 						// 비밀번호 일치 시 session에 정보 저장
-						if(pwd.equals(resultVO.getLoginPass())) {
+						if(pwd.equals(resultVO.getAdmPw())) {
 							loginVo.setLoginFail("");
 							admLoginService.updateLoginFailCnt(loginVo);
 
 							// 동시접속제한
 							EgovHttpSessionBindingListener listener = new EgovHttpSessionBindingListener();
 							request.getSession().setAttribute(resultVO.getLoginId(), listener);
-
-							// 메뉴 권한 확인
-							returnUrl = admLoginService.selectReturnUrl(resultVO);
-
-							if(returnUrl == null) {
-								returnUrl = EchoboardCommonUtil.alertMove(model, "메뉴 권한이 없어 로그인이 불가합니다.", "/adm/login.do");
-							} else {
-								// 마지막 로그인 일자 업데이트
-								admLoginService.updateLastLoginDate(loginVo);
-								session.setAttribute("adminLoginSession", resultVO);
-								session.setMaxInactiveInterval(1800);
-								returnUrl = "redirect:" + returnUrl;
-							}
+							
+							// 마지막 로그인 일자 업데이트
+							admLoginService.updateLastLoginDate(loginVo);
+							session.setAttribute("adminLoginSession", resultVO);
+							session.setMaxInactiveInterval(1800);
+							returnUrl = "redirect:/adm/main.do";
 
 						// 비밀번호 불일치
 						} else {
@@ -127,26 +120,19 @@ public class EchoboardAdmLoginController {
 					}
 				} else {
 					// 비밀번호 일치 시 session에 정보 저장
-					if(pwd.equals(resultVO.getLoginPass())) {
+					if(pwd.equals(resultVO.getAdmPw())) {
 						loginVo.setLoginFail("");
 						admLoginService.updateLoginFailCnt(loginVo);
 
 						// 동시접속제한
 						EgovHttpSessionBindingListener listener = new EgovHttpSessionBindingListener();
 						request.getSession().setAttribute(resultVO.getLoginId(), listener);
-
-						// 메뉴 권한 확인
-						returnUrl = admLoginService.selectReturnUrl(resultVO);
-
-						if(returnUrl == null) {
-							returnUrl = EchoboardCommonUtil.alertMove(model, "메뉴 권한이 없어 로그인이 불가합니다.", "/adm/login.do");
-						} else {
-							// 마지막 로그인 일자 업데이트
-							admLoginService.updateLastLoginDate(loginVo);
-							session.setAttribute("adminLoginSession", resultVO);
-							session.setMaxInactiveInterval(1800);
-							returnUrl = "redirect:" + returnUrl;
-						}
+						
+						// 마지막 로그인 일자 업데이트
+						admLoginService.updateLastLoginDate(loginVo);
+						session.setAttribute("adminLoginSession", resultVO);
+						session.setMaxInactiveInterval(1800);
+						returnUrl = "redirect:/adm/main.do";
 
 					// 비밀번호 불일치
 					} else {
