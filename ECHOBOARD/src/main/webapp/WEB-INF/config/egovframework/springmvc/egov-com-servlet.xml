@@ -15,6 +15,43 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
+	
+	<!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/adm/**/*.do" />
+			<mvc:exclude-mapping path="/adm/login.do" />
+			<mvc:exclude-mapping path="/adm/actionLogin.do" />
+			<bean class="egovframework.com.cmm.interceptor.AuthenticInterceptor">
+				<property name="siteType" value="adm"/>
+			</bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/eb/mypage/*.do" />
+			<bean class="egovframework.com.cmm.interceptor.AuthenticInterceptor">
+				<property name="siteType" value="user"/>
+				<property name="siteLang" value="eb"/>
+			</bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/adm/**/*.do" />
+			<!-- <mvc:exclude-mapping path="/adm/login.do" />
+			<mvc:exclude-mapping path="/adm/actionLogin.do" />
+			<mvc:exclude-mapping path="/adm/actionLogout.do" /> --><!-- postHandle 로 logout 계정을 알 수 없음 -->
+			<!-- 관리자 접속 로그를 기록해줄 인터셉터를 등록한다. -->
+			<bean class="egovframework.com.cmm.interceptor.LoggingInterceptor">
+				<property name="logType" value="admLog"/>
+			</bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*.do" />
+			<mvc:exclude-mapping path="/adm/**/*.do" />
+			<!-- 사용자 접속 로그를 기록해줄 인터셉터를 등록한다. -->
+			<bean class="egovframework.com.cmm.interceptor.LoggingInterceptor">
+				<property name="logType" value="userLog"/>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 
     <!-- 서블릿컨네이너상의 exception에 대한 오류 페이지를 연결하는 mvc 설정 -->

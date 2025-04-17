@@ -1,5 +1,11 @@
 package echoboard.adm.login.service;
 
+import java.util.List;
+
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
+import echoboard.adm.info.service.EchoboardAdmInfoVO;
+
 public interface EchoboardAdmLoginService {
 	
 	/**
@@ -25,9 +31,9 @@ public interface EchoboardAdmLoginService {
 	void updateLoginFailCnt(EchoboardAdmLoginVO vo) throws Exception;
 	
 	/**
-	 * 메뉴권한 주소 조회
+	 * 관리자 메뉴
 	 * @param vo
-	 * @return
+	 * @throws Exception
 	 */
-	public String selectReturnUrl(EchoboardAdmLoginVO vo) throws Exception;
+	List<EgovMap> selectAdmMenuList(EchoboardAdmInfoVO vo) throws Exception;
 }

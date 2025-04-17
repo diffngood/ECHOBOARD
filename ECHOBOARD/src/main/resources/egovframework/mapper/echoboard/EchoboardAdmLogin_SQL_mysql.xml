@@ -38,11 +38,26 @@
 		WHERE ADM_ID = #{loginId} AND DEL_YN = 'N'
 	</update>
 	
-	<select id="selectReturnUrl" parameterType="admLoginVO">
-		SELECT TAM.MENU_URL
-		FROM TB_ADMIN_AUTH TAA
-		JOIN TB_ADMIN_MENU TAM ON TAA.MENU_IDX = TAM.MENU_IDX
-		WHERE ADM_IDX = #{loginIdx} AND TAM.MENU_URL IS NOT NULL
-		LIMIT 1
+	<select id="selectAdmMenuList" resultType="egovMap">
+		SELECT
+		    M.MENU_IDX,
+		    M.MENU_NAME,
+		    M.PARENT_MENU_IDX,
+		    M.MENU_URL,
+		    M.MENU_SORT,
+		    M.PAGE_NUM_DEPTH,
+		    A.ADM_IDX
+		FROM
+		     TB_ADMIN_MENU M
+		LEFT OUTER JOIN (
+			SELECT MENU_IDX, ADM_IDX FROM TB_ADMIN_AUTH WHERE ADM_IDX = #{admIdx}
+		) A ON M.MENU_IDX = A.MENU_IDX
+		WHERE
+		    M.USE_YN = 'Y' AND M.SHOW_YN = 'Y' and A.ADM_IDX IS NOT NULL
+		    <if test="parentMenuIdx != null and !parentMenuIdx.equals('')">
+		    	AND M.PARENT_MENU_IDX = #{parentMenuIdx}
+		    </if>
+		ORDER BY
+		     M.MENU_SORT ASC
 	</select>
 </mapper>

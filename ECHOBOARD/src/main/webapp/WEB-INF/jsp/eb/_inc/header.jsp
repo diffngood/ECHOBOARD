@@ -3,7 +3,7 @@
 <header>
   <div class="header-container">
     <!-- 좌측 로고 -->
-    <div class="logo">경향신문(흑백예시)</div>
+    <div class="logo">로고 영역</div>
     <!-- 중앙 메뉴 -->
     <nav>
       <a href="#">메뉴1</a>

@@ -1,6 +1,7 @@
 package echoboard.usr.com.service;
 
-import echoboard.usr.com.EchoboardUsrSessionVO;
+import echoboard.adm.login.service.EchoboardAdmLoginVO;
+import echoboard.usr.login.service.EchoboardUserLoginVO;
 
 public interface EchoboardUsrDetailsService {
 
@@ -8,13 +9,11 @@ public interface EchoboardUsrDetailsService {
 	 * 인증된 사용자객체를 VO형식으로 가져온다.
 	 * @return Object - 사용자 ValueObject
 	 */
-	EchoboardUsrSessionVO getAuthenticatedUser();
+	EchoboardUserLoginVO getAuthenticatedUser();
 
-	EchoboardUsrSessionVO getSessionVo();
-
-	EchoboardUsrSessionVO selectUserBySabun(EchoboardUsrSessionVO vo) throws Exception;
-
-	<T> String getJikmuPeriod(T vo) throws Exception;
+	EchoboardUserLoginVO getSessionVo();
+	
+	EchoboardAdmLoginVO getAdminAuthenticatedUser();
 	
 	// 부서장 체크
 	String getIsDeptHeadYn(String sabun);

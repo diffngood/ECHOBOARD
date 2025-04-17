@@ -1,6 +1,8 @@
 package echoboard.usr.com;
 
+import echoboard.adm.login.service.EchoboardAdmLoginVO;
 import echoboard.usr.com.service.EchoboardUsrDetailsService;
+import echoboard.usr.login.service.EchoboardUserLoginVO;
 
 /**
  * EgovUsrDetails Helper 클래스
@@ -31,11 +33,15 @@ public class EchoboardUsrDetailsHelper {
 		EchoboardUsrDetailsHelper.EchoboardUsrDetailsService = echoboardUsrDetailsService;
 	}
 
-	public static EchoboardUsrSessionVO getAuthenticatedUser() {
+	public static EchoboardUserLoginVO getAuthenticatedUser() {
 		return EchoboardUsrDetailsService.getAuthenticatedUser();
 	}
+	
+	public static EchoboardAdmLoginVO getAdminAuthenticatedUser() {
+		return EchoboardUsrDetailsService.getAdminAuthenticatedUser();
+	}
 
-	public static EchoboardUsrSessionVO getSessionVo() {
+	public static EchoboardUserLoginVO getSessionVo() {
 		return EchoboardUsrDetailsService.getSessionVo();
 	}
 }
